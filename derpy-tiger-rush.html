@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Derpy Tiger Rush</title>
+<style>
+body {
+margin: 0;
+padding: 0;
+background-color: #110022;
+font-family: 'courier, new', couriermonospace;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+min-height: 100vh;
+color: #000000;
+overflow: hidden;
+}
+h1 {
+margin: 20px 0;
+color:#00e5ff;
+text-shadow: 0 0 10px #ff007f
+font size 24px;
+
+}
+
+canvas {
+background:linear-gradient(to bottom, #1a0033, #330066);
+display: block;
+
+}
+
+.controls{
+margin-top: 12px;
+text-align: center;
+font-size: 14px;
+color: #bbb;
+}
+
+.btn{
+background-color: #ff007f;
+color: #fff;
+border: none;
+padding: 10px 20px;
+font-weight: bold;
+cursor: pointer;
+border-radius: 4px;
+margin-top: 10px;
+box-shadow: 0 0 10px #ff007f;
+}
+.btn:hover {
+background: #ff55a3;
+}
+</style>
+</head>
+<body>
+<h1>DERPY TIGER'S UNDERWORLD DASH</h1>
+div: id="gameContainer">
+canvas id="gameCanvas" width="800" height="400"></canvas>
+</div>
+<div class="controls"
+press <strong>SPACEBAR</strong> or </strong> TAP to jump over obstacles and collect notes!
+</div>
+button class="btn" id="restartBtn"> style=display:none;onclick="restartGame()">Play again </button>
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const restartBtn = document.getElementById('restartBtn');
+
+// game variables
+let gamestate ="PLAYING"; // PLAYING, GAME_OVER
+let score = 0;
+let gameSpeed = 5;
+// tiger (player)properties
+const tiger = {
+    x: 80,
+    y: 280,
+    width: 50,
+    height: 50,
+    velocityY: 0,
+    gravity: 0.6,
+    jumpforce: -12,
+    isgrounded: false
+
+};
+
+//obstacles & item arrays
+let obstacles = [];
+let items = [];
+let obstacleSpawnTimer = 0;
+// input handlers
+.add eventListener('keydown', (e) => {
+    if (e.code === "Space") {
+        jump();
+    
+    }
+});
+.add eventListener('touchstart', (e) => {
+    jump();
+});
+        restartGame();
+    }
+}
+
+//Spawn Logic
+function spawnobjects(){
+spawntimer++;
+if (spawn timer % 100 === 0) {
+    // spawn an underworld demon obstacle
+    obstacles.push({
+        x: canvas.width,
+        y: 300,
+        width: 30,
+        height: 50
+        color: '#ff3333'
+    });
+    // randomly spawn a K-Pop music note item above it
+    if (math.random)() >0.4) {
+        items.push({
+            x: canvas.width+40
+            y: 180. math.random() * 60,
+            width: 20,
+            height: 20,
+            color: '#00e5ff',
+            collected: false
+        });
+    }
+
+}
+
+}
+    //main update loop
+function update() {
+    if (gamestate!== "PLAYING") return;
+    //apply gravity to tiger
+    tiger.velocityY += tiger.gravity;
+
+    // Ground Collision
+    if (tiger.y > 280) {
+        tiger.y = 280;
+        tiger.velocityY = 0;
+        tiger.isgrounded = true;
+
+    } 
+    //move and filter obstacles
+    obstacles.forEach((obs) => {
+        obs.x -= gameSpeed;
+    //collision check (tiger vs obstacle)
+    if (
+tiger.x < obs.x + obs.width &&
+tiger.x + tiger.width > obs.x &&
+tiger.y < obs.y + obs.height &&
+tiger.y + tiger.height > obs.y
+) {
+        gamestate = "GAME_OVER";
+    }
+});
+obsticales = obstacles.filter((obs) => obs.x + obs.width > 0);
+
+    //move and filter items
+    items.forEach((item) => {
+        item.x -= gameSpeed;
+        //collision check (tiger vs item)
+        if (
+            tiger.x < item.x + item.width &&
+            tiger.x + tiger.width > item.x &&
+            tiger.y < item.y + item.height &&
+            tiger.y + tiger.height > item.y &&
+            !item.collected
+        ) {
+            score++;
+            item.collected = true;
+        }
+    });
+    obstacles =obstacles.filter (obs => obs.x)+obs.width >0);
